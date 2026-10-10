@@ -1,4 +1,4 @@
-"""Navegação entre as telas: abertura, Nível 1 (memória) e Nível 2 (cálculos)."""
+"""Navegação entre as telas: abertura, Nível 1 (memória), Nível 2 (cálculos) e simulador."""
 
 from __future__ import annotations
 
@@ -20,6 +20,7 @@ from mente_financeira.storage import SettingsStore
 from mente_financeira import sugestoes
 from mente_financeira.ui.admin_screen import AdminScreen
 from mente_financeira.ui.app import DEFAULT_TRACK, MemoryFinanceApp
+from mente_financeira.ui.factory_screen import FactoryScreen
 from mente_financeira.ui.home import HomeScreen
 from mente_financeira.ui.memory_screen import MemoryScreen
 from mente_financeira.ui.sounds import SoundEffects
@@ -117,6 +118,7 @@ class GameShell:
             on_admin=self.open_admin if admin_ativo() and self.track == FUNDAMENTAL else None,
             on_tracks=self.show_tracks,
             medals=self.medals,
+            on_factory=self.open_factory if self.track == ENGENHARIA else None,
         )
         self._activate(home)
         home.show()
@@ -143,6 +145,13 @@ class GameShell:
 
     def _record_medals(self, game: MemoryGame, right_labels: set[str]) -> list[Medal]:
         return self.medals.record(GameSummary.of(game, self.track, right_labels))
+
+    def open_factory(self) -> None:
+        """Simulador "Minha fábrica": comprar, alugar ou financiar uma máquina."""
+
+        factory = FactoryScreen(self.page, on_home=self.show_home, sounds=self.sounds)
+        self._activate(factory)
+        factory.show()
 
     def open_level2(self) -> None:
         self._stop_current()

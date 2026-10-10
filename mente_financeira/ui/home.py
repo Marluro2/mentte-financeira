@@ -60,9 +60,11 @@ class HomeScreen:
         on_admin: Callable[[], None] | None = None,
         on_tracks: Callable[[], None] | None = None,
         medals: MedalBook | None = None,
+        on_factory: Callable[[], None] | None = None,
     ) -> None:
         self.page = page
         self.medals = medals  # botão "Medalhas" no canto (veja medals_view)
+        self.on_factory = on_factory  # simulador "Minha fábrica" (só na Engenharia)
         self.deck = deck
         self.on_play = on_play
         self.on_level2 = on_level2
@@ -197,6 +199,8 @@ class HomeScreen:
             self._names(),
             self._play_button(height=58 if self.compact or self.short else 66),
         ]
+        if self.on_factory:
+            items.append(self._factory_card())
         if self.on_admin:
             items.insert(0, self._admin_banner())
             items.append(self._admin_card())
@@ -255,6 +259,49 @@ class HomeScreen:
                 spacing=14,
             ),
         )
+
+    def _factory_card(self) -> ft.Control:
+        """Entrada do simulador "Minha fábrica", logo abaixo do botão de jogar."""
+
+        return ft.Container(
+            ink=True,
+            on_click=self._open_factory,
+            on_hover=self._hover,
+            scale=1,
+            animate_scale=ft.Animation(180, ft.AnimationCurve.EASE_OUT),
+            padding=12 if self.compact or self.short else 14,
+            border_radius=22,
+            bgcolor=ft.Colors.with_opacity(0.14, s.CYAN),
+            border=ft.Border.all(1.5, ft.Colors.with_opacity(0.6, s.CYAN)),
+            content=ft.Row(
+                [
+                    ft.Container(
+                        width=52,
+                        height=52,
+                        border_radius=16,
+                        bgcolor=ft.Colors.with_opacity(0.25, s.CYAN),
+                        alignment=ft.Alignment.CENTER,
+                        content=ft.Text("🏭", size=28),
+                    ),
+                    ft.Column(
+                        [
+                            ft.Text("SIMULADOR", size=11, weight=ft.FontWeight.BOLD, color=s.CYAN),
+                            ft.Text("Minha fábrica", size=17, weight=ft.FontWeight.W_900, color=s.WHITE),
+                            ft.Text("Comprar, alugar ou financiar uma máquina? Veja o VPL e o caixa.", size=12, color=s.MUTED),
+                        ],
+                        spacing=1,
+                        expand=True,
+                    ),
+                    ft.Icon(ft.Icons.ARROW_FORWARD_ROUNDED, color=s.CYAN),
+                ],
+                spacing=14,
+            ),
+        )
+
+    def _open_factory(self, _: Any = None) -> None:
+        if self.on_factory is not None:
+            self.stop()
+            self.on_factory()
 
     # ------------------------------------------------------------ peças
     def _back_button(self) -> list[ft.Control]:

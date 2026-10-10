@@ -71,6 +71,7 @@ abre duas vezes ao mesmo tempo; o modo administrador pode ficar aberto junto.
 | **Nível 1 — Memória Financeira** | Jogo da memória tradicional: 16 cartas (8 pares iguais) sorteadas entre 12 conceitos; cada par revela um "Você sabia?" e traz um **Desafio Relâmpago** (com lousa). No Solo, acertar tira 5 segundos do relógio; no Duelo, acertou, continua; errou, passa a vez. Pares seguidos sem errar formam um **combo** que dobra os pontos |
 | **Medalhas** | 14 conquistas com metas ("Encontre 5 pares seguidos sem errar", "Acerte um desafio de VPL"...). O botão **Medalhas** fica no canto da abertura de cada trilha, e as novas aparecem no fim da partida. Ficam guardadas só no aparelho, junto das preferências |
 | **Nível 2 — Desafio dos Cálculos** | Pares questão ↔ resolução com porcentagem, juros, inflação e financiamentos (8 fases) |
+| **Minha fábrica** (Engenharia) | Simulador: a fábrica precisa de uma máquina e o jogador escolhe **comprar à vista, alugar ou financiar**. Depois vê o **VPL** e o **caixa ano a ano** de cada caminho, a melhor escolha (maior VPL que o caixa aguenta) e por quê. Em **E se…?** muda a TMA e os juros do banco e vê a resposta mudar. São 4 máquinas, cada uma com uma lição |
 
 Efeitos sonoros (virar carta, acerto, erro, incentivo e vitória) ficam em
 `assets/sons/` e são gerados por `ferramentas/gerar_sons.py`. O botão 🔊/🔇
@@ -116,12 +117,14 @@ mente_financeira_flet/
 │   ├── core/
 │   │   ├── memory_game.py       # regras do Nível 1 (memória)
 │   │   ├── medals.py            # medalhas: metas de cada partida
+│   │   ├── factory.py           # simulador "Minha fábrica": VPL e caixa
 │   │   └── session.py           # regras do Nível 2 (cálculos)
 │   ├── storage.py               # preferências e medalhas salvas localmente
 │   └── ui/
 │       ├── shell.py             # navegação entre as telas
 │       ├── home.py              # tela de abertura
 │       ├── memory_screen.py     # Nível 1
+│       ├── factory_screen.py    # simulador "Minha fábrica"
 │       ├── app.py               # Nível 2
 │       └── ...                  # estilo, layout, lousa, paletas
 ├── tests/                       # testes automatizados (pytest)
